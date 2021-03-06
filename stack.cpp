@@ -1,79 +1,87 @@
 #include<iostream>
 using namespace std;
-
-struct node
-{
-    int data;
-    struct node *next;
-};
-struct node *top=NULL;
-
+struct node{
+int data;
+struct node *next;
+}*head;
+//stack LIFO last insertion first deletion
+//push = insertion at beginnning & pop = deletion at beginning.
 void push(int data){
-    struct node *new_node=(struct node*)malloc(sizeof(struct node));
-    new_node->data=data;
-    new_node->next=top;
-    top=new_node;
+struct node *ptr=new node(); // ptr=(struct node *)malloc(sizeof(struct node));
+    if(ptr==NULL){
+        cout<<"\nNo Memory\n";
+    }
+    else{
+        if(head==NULL){
+            head=ptr;
+            ptr->next=NULL;
+            ptr->data=data;
+        }
+        else{
+            ptr->next=head;
+            ptr->data=data;
+            head=ptr;
+        }
+    }
 }
-
 void pop()
 {
-    if(top==NULL) cout<<"\nStack underflow\n";
+    if(head==NULL){
+        cout<<"\nStack Underflow\n";
+    }
+    else if(head->next==NULL){
+        cout<<head->data<<" popped out successfully\n";
+        head=head->next;
+        cout<<"\nStack is Empty now\n";
+    }
     else{
-        cout<<"\nTop element "<<top->data<<" successfully popped\n";
-        top=top->next;
+        cout<<head->data<<" popped out successfully\n";
+        head=head->next;
     }
 }
-void display()
+void display(struct node *temp)
 {
-    struct node *ptr;
-    if(top==NULL) cout<<"\nStack is empty\n";
+    temp=head;
+    if(temp==NULL){
+        cout<<"\nStack is Empty\n";
+    }
     else{
-        ptr=top;
-        while(ptr!=NULL){
-            cout<<ptr->data<<"\t";
-            ptr=ptr->next;
+        while(temp!=NULL){
+            cout<<temp->data<<"->";
+            temp=temp->next;
         }
     }
 }
-
-int main()
-{
-    int ch=0;
-    do{
-
+int main(){
+    int choice=0;
+    cout<<"\n\nStack Program\n";
+    cout<<"\n---------------\n\n\n";
+    while(choice!=5){
     cout<<"\nPress 1 for PUSH\n";
     cout<<"\nPress 2 for POP\n";
-    cout<<"\nPress 3 for DISPLAY STACK\n";
-    cout<<"\nPress 4 for EXIT\n";
-    cin>>ch;
-    switch(ch){
-        case 1:{
-            int num=0;
-            cout<<"\nEnter the element to be pushed\n";
-            cin>>num;
-            push(num);
-            break;
+    cout<<"\nPress 3 for displaying Stack\n";
+    cout<<"\nPress 4 for exit\n\n\n";
+    cin>>choice;
+        switch(choice){
+                int data;
+            case 1:
+                cout<<"\nEnter the data\n\n";
+                cin>>data;
+                push(data);
+                cout<<data<<" pushed successfully\n";
+                display(head);
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                display(head);
+                break;
+            case 4:
+                cout<<"\n";
+                return 0;
         }
-        case 2:{
-            pop();
-            cout<<"\nPOP successfully carried out\n";
-            break;
-        }
-        case 3:{
-            display();
-            break;
-    }
-    case 4:{
-        cout<<"\nExiting\n";
-        break;
-    }
-    default:{
-        int n;
-        cout<<"\nInvalid Choice\n";
-        goto a;
-        break;
-    }
-    }
-}while(ch!=4);
-return 0;
+}
+    cout<<"\n";
+    return 0;
 }
